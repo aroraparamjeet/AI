@@ -18,9 +18,13 @@
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px;}
+
+/* Root layout: full viewport, no scrolling on body */
 html,body{height:100%;overflow:hidden;}
 body{display:flex;flex-direction:column;background:var(--bg);color:var(--txt);font-family:var(--sans);}
-.hdr{height:52px;min-height:52px;background:var(--sur);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px;padding:0 18px;flex-shrink:0;}
+
+/* Header */
+.hdr{height:52px;min-height:52px;background:var(--sur);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px;padding:0 18px;flex-shrink:0;z-index:10;}
 .logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;white-space:nowrap;}
 .logo-box{width:24px;height:24px;background:var(--acc);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 0 12px var(--glow);}
 .logo span{color:var(--acc2);}.logo sub{font-size:9px;color:var(--tx3);font-weight:600;}
@@ -38,8 +42,14 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--txt);fo
 .btn-g:hover{border-color:var(--acc);color:var(--acc2);}
 .btn-r{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--red);font-family:var(--sans);font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;cursor:pointer;}
 .btn-r:hover{background:rgba(239,68,68,.22);}
+
+/* Body: fills remaining height, clips children */
 .body{flex:1;display:flex;overflow:hidden;min-height:0;}
-.pane{display:none;flex:1;min-height:0;overflow:hidden;}.pane.show{display:flex;}
+
+/* Panes: hidden by default, shown as flex via JS */
+.pane{display:none;flex:1;min-height:0;overflow:hidden;}
+
+/* Sidebar */
 .sb{width:285px;min-width:240px;background:var(--sur);border-right:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
 .sb-hd{padding:10px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;}
 .sb-ti{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--tx3);}
@@ -72,7 +82,9 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--txt);fo
 .tgl-sl{position:absolute;inset:0;background:var(--bdr2);border-radius:15px;cursor:pointer;transition:.2s;}
 .tgl-sl:before{content:'';position:absolute;height:9px;width:9px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;}
 input:checked+.tgl-sl{background:var(--acc);}input:checked+.tgl-sl:before{transform:translateX(13px);}
-.det{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+
+/* Detail/Editor panel */
+.det{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);min-height:0;}
 .det-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3);gap:8px;}
 .ed-scroll{flex:1;overflow-y:auto;padding:18px 22px;min-height:0;}
 .ed-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px;}
@@ -111,13 +123,17 @@ textarea{resize:vertical;min-height:130px;line-height:1.6;font-size:11px;backgro
 .test-pan{border-top:1px solid var(--bdr);background:var(--sur);padding:12px 20px;flex-shrink:0;}
 .test-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
 .test-out{background:var(--sur3);border:1px solid var(--bdr2);border-radius:6px;padding:9px;font-family:var(--mono);font-size:10px;max-height:130px;overflow-y:auto;color:var(--tx2);}
-.logs-pane{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:16px 20px;}
+
+/* Logs pane */
+.logs-pane{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:16px 20px;min-height:0;}
 .logs-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0;}
 .log-wrap{flex:1;overflow-y:auto;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;min-height:0;}
 table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:10px;}
 thead th{background:var(--sur2);border-bottom:1px solid var(--bdr);padding:7px 11px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--tx3);position:sticky;top:0;z-index:5;}
 tbody tr{border-bottom:1px solid var(--bdr);transition:background .1s;}tbody tr:hover{background:var(--sur2);}tbody tr:last-child{border-bottom:none;}
 td{padding:6px 11px;vertical-align:middle;}
+
+/* Settings pane */
 .set-pane{flex:1;overflow-y:auto;padding:22px 26px;min-height:0;}
 .set-pane h2{font-size:16px;font-weight:800;margin-bottom:16px;}
 .s-card{background:var(--sur);border:1px solid var(--bdr);border-radius:9px;padding:16px;margin-bottom:14px;}
@@ -135,7 +151,7 @@ td{padding:6px 11px;vertical-align:middle;}
 .cp-wrap:focus-within{border-color:var(--acc);}
 .cp-wrap input[type=color]{width:22px;height:22px;border:none;background:none;padding:0;cursor:pointer;border-radius:3px;}
 .cp-wrap input[type=text]{flex:1;background:none;border:none;padding:0;font-family:var(--mono);font-size:11px;color:var(--txt);outline:none;width:70px;}
-.hw-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.hw-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;}
 .hw-ic{font-size:16px;flex-shrink:0;}.hw-nm{font-size:11px;font-weight:700;margin-bottom:2px;}.hw-ds{font-size:10px;color:var(--tx2);line-height:1.4;}
 .tip{background:rgba(91,95,199,.08);border:1px solid rgba(91,95,199,.2);border-radius:5px;padding:7px 10px;font-size:10px;color:var(--tx2);margin-bottom:11px;font-family:var(--mono);line-height:1.5;}
 .tip b{color:var(--acc2);}
@@ -146,21 +162,25 @@ td{padding:6px 11px;vertical-align:middle;}
 </style>
 </head>
 <body>
+
 <header class="hdr">
   <div class="logo"><div class="logo-box">🎭</div>Local<span>Mockr</span><sub>v2</sub></div>
   <div class="srv-pill"><div class="dot"></div>Proxy: localhost:3847</div>
   <nav class="nav">
-    <button class="tab on" id="t-rules" onclick="show('rules')">⚡ Rules <span class="bdg" id="mc">0</span></button>
-    <button class="tab" id="t-logs" onclick="show('logs')">📋 Logs <span class="bdg" id="lc">0</span></button>
+    <button class="tab" id="t-rules"    onclick="show('rules')">⚡ Rules <span class="bdg" id="mc">0</span></button>
+    <button class="tab" id="t-logs"     onclick="show('logs')">📋 Logs <span class="bdg" id="lc">0</span></button>
     <button class="tab" id="t-settings" onclick="show('settings')">⚙️ Settings</button>
   </nav>
   <div class="ml">
     <button class="btn-g" onclick="refreshAll()">↺ Refresh</button>
-    <button class="btn" onclick="openNew()">＋ New Rule</button>
+    <button class="btn"   onclick="openNew()">＋ New Rule</button>
   </div>
 </header>
+
 <div class="body">
-  <div class="pane show" id="p-rules">
+
+  <!-- Rules pane: shown immediately via inline style; JS takes over after boot -->
+  <div class="pane" id="p-rules" style="display:flex;">
     <div class="sb">
       <div class="sb-hd"><span class="sb-ti">API Rules</span></div>
       <div class="sb-sr"><input type="text" id="srch" placeholder="Filter path, method, mode..." oninput="renderList(this.value)"></div>
@@ -173,6 +193,7 @@ td{padding:6px 11px;vertical-align:middle;}
         <div style="font-size:11px">Select a rule or create a new one</div>
         <button class="btn" style="margin-top:8px" onclick="openNew()">＋ Create First Rule</button>
       </div>
+      <!-- FIX: #ew shown as display:flex so ed-scroll + test-pan stack as column -->
       <div id="ew" style="display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0;">
         <div class="ed-scroll" id="ef"></div>
         <div class="test-pan">
@@ -182,6 +203,8 @@ td{padding:6px 11px;vertical-align:middle;}
       </div>
     </div>
   </div>
+
+  <!-- Logs pane -->
   <div class="pane" id="p-logs">
     <div class="logs-pane">
       <div class="logs-hd">
@@ -196,15 +219,18 @@ td{padding:6px 11px;vertical-align:middle;}
       </div>
     </div>
   </div>
+
+  <!-- Settings pane -->
   <div class="pane" id="p-settings">
     <div class="set-pane">
       <h2>⚙️ Settings</h2>
+
       <div class="s-card">
         <h3>Appearance &amp; Theme</h3>
         <p>Pick a preset or choose your own colours. Saved in browser.</p>
         <div class="sec">Light / Dark</div>
         <div class="ld-row">
-          <button class="ld-btn ld-on" id="btn-dark" onclick="themeMode('dark')">🌙 Dark</button>
+          <button class="ld-btn" id="btn-dark"  onclick="themeMode('dark')">🌙 Dark</button>
           <button class="ld-btn" id="btn-light" onclick="themeMode('light')">☀️ Light</button>
         </div>
         <div class="sec">Preset Themes</div>
@@ -214,81 +240,513 @@ td{padding:6px 11px;vertical-align:middle;}
           <div class="fg-g" style="flex:1"><label>Accent</label>
             <div class="cp-wrap">
               <input type="color" id="cp-a" oninput="document.getElementById('ch-a').value=this.value">
-              <input type="text" id="ch-a" placeholder="#5b5fc7" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))document.getElementById('cp-a').value=this.value">
+              <input type="text"  id="ch-a" placeholder="#5b5fc7" maxlength="7"
+                     oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))document.getElementById('cp-a').value=this.value">
             </div>
           </div>
           <div class="fg-g" style="flex:1"><label>Background</label>
             <div class="cp-wrap">
               <input type="color" id="cp-b" oninput="document.getElementById('ch-b').value=this.value">
-              <input type="text" id="ch-b" placeholder="#0a0a0f" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))document.getElementById('cp-b').value=this.value">
+              <input type="text"  id="ch-b" placeholder="#0a0a0f" maxlength="7"
+                     oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))document.getElementById('cp-b').value=this.value">
             </div>
           </div>
         </div>
         <div style="display:flex;gap:7px">
-          <button class="btn" onclick="applyCustomTheme()">Apply Custom</button>
+          <button class="btn"   onclick="applyCustomTheme()">Apply Custom</button>
           <button class="btn-g" onclick="applyTheme(THEMES[0])">Reset to Default</button>
         </div>
       </div>
+
       <div class="s-card">
         <h3>Global Base URL</h3>
         <p>Rules without their own External URL use this as the base for network calls.</p>
         <div style="margin-bottom:10px"><div class="fg-g"><label>Base URL</label><input type="text" id="gbu" placeholder="https://api.yourcompany.com"></div></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="btn" onclick="saveSettings()">💾 Save</button>
+          <button class="btn"   onclick="saveSettings()">💾 Save</button>
           <button class="btn-g" onclick="probeGlobal()">🔍 Test Connectivity</button>
           <span id="gpr" style="font-family:var(--mono);font-size:10px"></span>
         </div>
       </div>
+
       <div class="s-card">
         <h3>How Modes Work</h3><p></p>
         <div class="hw-row"><div class="hw-ic">🌐</div><div><div class="hw-nm" style="color:var(--cyn)">Always Network</div><div class="hw-ds">Every request is forwarded to the real external API.</div></div></div>
         <div class="hw-row"><div class="hw-ic">🔀</div><div><div class="hw-nm" style="color:var(--org)">Network + Fallback</div><div class="hw-ds">Tries the real API first. If unavailable, returns your saved local response.</div></div></div>
         <div class="hw-row"><div class="hw-ic">📦</div><div><div class="hw-nm" style="color:var(--acc2)">Always Mock</div><div class="hw-ds">Always returns your saved local JSON. The external API is never called.</div></div></div>
       </div>
+
       <div class="s-card">
         <h3>Proxy Address</h3><p>Point your app at this instead of the real API:</p>
         <div style="font-family:var(--mono);font-size:13px;color:var(--acc2);background:var(--sur3);padding:9px 13px;border-radius:5px;border:1px solid var(--bdr2)">http://localhost:3847</div>
       </div>
     </div>
   </div>
-</div>
+
+</div><!-- /.body -->
+
 <div class="toast-ct" id="tc"></div>
+
 <script>
 'use strict';
-const API='http://localhost:3848/api';
-let mocks=[],logs=[],selId=null,isNew=false;
-function show(tab){['rules','logs','settings'].forEach(t=>{document.getElementById('p-'+t).style.display=t===tab?'flex':'none';document.getElementById('t-'+t).className='tab'+(t===tab?' on':'');});if(tab==='logs')loadLogs();if(tab==='settings'){loadSettings();renderThemeGrid();}}
-async function refreshAll(){await loadMocks();await loadLogs();}
-async function loadMocks(){try{mocks=await(await fetch(API+'/mocks')).json();renderList();document.getElementById('mc').textContent=mocks.length;}catch(e){toast('Cannot reach server. Is LocalMockr running?','er');}}
-async function loadLogs(){try{logs=await(await fetch(API+'/logs')).json();renderLogs();document.getElementById('lc').textContent=logs.length;}catch(e){}}
-async function loadSettings(){try{const s=await(await fetch(API+'/settings')).json();document.getElementById('gbu').value=s.globalBaseUrl||'';}catch(e){}}
-async function saveSettings(){const url=document.getElementById('gbu').value.trim();await fetch(API+'/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({globalBaseUrl:url})});toast('Settings saved','ok');}
-async function probeGlobal(){const url=document.getElementById('gbu').value.trim();if(!url){toast('Enter a URL first','er');return;}const el=document.getElementById('gpr');el.textContent='Checking...';el.style.color='var(--tx3)';try{const d=await(await fetch(API+'/probe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})})).json();el.style.color=d.reachable?'var(--grn)':'var(--red)';el.textContent=d.reachable?'Reachable ('+d.status+')':'Unreachable: '+(d.error||'failed');}catch(e){el.textContent='Error';}}
-function renderList(filter=''){const c=document.getElementById('ml');const f=filter.toLowerCase();const arr=mocks.filter(m=>m.path.toLowerCase().includes(f)||m.method.toLowerCase().includes(f)||(m.name||'').toLowerCase().includes(f)||(m.mode||'').toLowerCase().includes(f));if(!arr.length){c.innerHTML=`<div class="eh">${filter?'No matches':'No rules yet.<br>Click <b>+ New Rule</b>'}</div>`;return;}const sc=n=>n<300?'s2':n<400?'s3':n<500?'s4':'s5';const mp=m=>m==='always_network'?'<span class="mp mpN">🌐 Network</span>':m==='fallback'?'<span class="mp mpF">🔀 Fallback</span>':'<span class="mp mpM">📦 Mock</span>';c.innerHTML=arr.map(m=>`<div class="mc ${selId===m.id?'sel':''} ${!m.enabled?'dis':''}" onclick="selectMock('${m.id}')"><div class="mc-t"><span class="mb m${m.method==='*'?'ANY':m.method}">${m.method==='*'?'ANY':m.method}</span><span class="mc-p">${esc(m.path)}</span><span class="sb2 ${sc(m.statusCode||200)}">${m.statusCode||200}</span><label class="tgl" onclick="event.stopPropagation()"><input type="checkbox" ${m.enabled?'checked':''} onchange="toggleRule('${m.id}',this.checked)"><span class="tgl-sl"></span></label></div><div class="mc-m"><span>${esc(m.name||'Unnamed')}</span>${mp(m.mode||'always_mock')}${m.delayMs>0?`<span style="color:var(--org)">⏱${m.delayMs}ms</span>`:''}</div></div>`).join('');}
-function selectMock(id){selId=id;isNew=false;renderList(document.getElementById('srch').value);buildEditor(mocks.find(m=>m.id===id));}
-function openNew(){selId=null;isNew=true;renderList(document.getElementById('srch').value);buildEditor({name:'',method:'GET',path:'/api/example',mode:'always_mock',externalUrl:'',networkTimeoutMs:8000,statusCode:200,forceStatusCode:0,contentType:'application/json',responseBody:'{\n  "source": "LOCAL_MOCK",\n  "message": "Hello from LocalMockr"\n}',delayMs:0,headers:{},enabled:true},true);}
-function buildEditor(m,isNewForm=false){document.getElementById('de').style.display='none';const ew=document.getElementById('ew');ew.style.display='flex';const mode=m.mode||'always_mock',sc=m.statusCode||200,fsc=m.forceStatusCode||0,d=m.delayMs||0;document.getElementById('ef').innerHTML=`<div class="ed-hd"><div class="ed-ti">${isNewForm?'✦ New Rule':'✦ Edit Rule'}</div><div class="ed-ac">${!isNewForm?`<button class="btn-r" onclick="deleteRule('${m.id}')">🗑 Delete</button>`:''}<button class="btn-g" onclick="cancelEdit()">Cancel</button><button class="btn" onclick="saveRule()">💾 Save</button></div></div><div class="tip"><b>Tip:</b> Point your app at <b>http://localhost:3847</b>. Use <b>{{timestamp}}</b> or <b>{{random_id}}</b> in the response body.</div><div class="fg"><div class="fg-g"><label>Rule Name</label><input type="text" id="fn" placeholder="e.g. Get Bank Details" value="${esc(m.name||'')}"></div><div class="fg-g"><label>HTTP Method</label><select id="fm">${['GET','POST','PUT','PATCH','DELETE','OPTIONS','HEAD','*'].map(x=>`<option value="${x}" ${m.method===x?'selected':''}>${x==='*'?'ANY (wildcard)':x}</option>`).join('')}</select></div><div class="fg-g full"><label>API Path (supports * wildcard)</label><input type="text" id="fp" placeholder="/api/customer/bankdetails" value="${esc(m.path)}"></div></div><div class="div"></div><div class="sec">Request Mode</div><div class="mode-row"><div class="mode-card ${mode==='always_network'?'mc-net':''}" id="mc-net" onclick="pickMode('always_network')"><div class="mode-icon">🌐</div><div class="mode-nm" style="color:var(--cyn)">Always Network</div><div class="mode-ds">Forward to real external API</div></div><div class="mode-card ${mode==='fallback'?'mc-fb':''}" id="mc-fb" onclick="pickMode('fallback')"><div class="mode-icon">🔀</div><div class="mode-nm" style="color:var(--org)">Network + Fallback</div><div class="mode-ds">Try real API, use mock if down</div></div><div class="mode-card ${mode==='always_mock'?'mc-mk':''}" id="mc-mk" onclick="pickMode('always_mock')"><div class="mode-icon">📦</div><div class="mode-nm" style="color:var(--acc2)">Always Mock</div><div class="mode-ds">Always return saved local JSON</div></div></div><input type="hidden" id="fmode" value="${mode}"><div id="net-sec" style="display:${mode==='always_mock'?'none':'block'}"><div class="div"></div><div class="sec">External API</div><div class="fg"><div class="probe-row full"><div class="fg-g"><label>External Base URL (blank = use global setting)</label><input type="text" id="feu" placeholder="https://api.example.com" value="${esc(m.externalUrl||'')}"></div><button class="btn-g" onclick="probeExt()" style="margin-bottom:0">🔍 Test</button><span id="probe-res"></span></div><div class="fg-g"><label>Timeout (ms)</label><input type="number" id="fto" value="${m.networkTimeoutMs||8000}" min="500" max="60000"><div class="chips">${[2000,5000,8000,15000,30000].map(t=>`<span class="chip" onclick="document.getElementById('fto').value=${t}">${t/1000}s</span>`).join('')}</div></div></div></div><div id="mock-sec" style="display:${mode==='always_network'?'none':'block'}"><div class="div"></div><div class="sec">Saved Local Response</div><div class="fg-g" style="margin-bottom:10px"><label>Status Code</label><div class="sps">${[200,201,204,400,401,403,404,422,500,503].map(s=>{const c=s<300?'sp2':s<500?'sp4':'sp5';return `<button class="sp ${c}" onclick="document.getElementById('fsc').value=${s}">${s}</button>`;}).join('')}</div><input type="number" id="fsc" value="${sc}" min="100" max="599"></div><div class="fg-g" style="margin-bottom:10px"><label>Content-Type</label><input type="text" id="fct" value="${esc(m.contentType||'application/json')}"><div class="chips">${['application/json','text/plain','application/xml','text/html'].map(ct=>`<span class="chip" onclick="document.getElementById('fct').value='${ct}'">${ct}</span>`).join('')}</div></div><div class="fg-g" style="margin-bottom:11px"><label>Response Body</label><textarea id="fb" rows="8">${esc(m.responseBody||'')}</textarea></div></div><div class="div"></div><div class="sec">Overrides &amp; Throttling</div><div class="fg"><div class="fg-g"><label>Force Status Override (0 = disabled)</label><div class="sps">${[0,200,400,500,503].map(s=>{const c=s===0?'sp2':s<300?'sp2':s<500?'sp4':'sp5';return `<button class="sp ${c}" onclick="document.getElementById('ffsc').value=${s}">${s===0?'Off':s}</button>`;}).join('')}</div><input type="number" id="ffsc" value="${fsc}" min="0" max="599" placeholder="0 = disabled"></div><div class="fg-g"><label>Response Delay / Throttle (ms)</label><div class="rng-row"><input type="range" id="fdr" min="0" max="10000" step="50" value="${d}" oninput="document.getElementById('fd').value=this.value;document.getElementById('fdv').textContent=this.value+'ms'"><input type="number" id="fd" value="${d}" min="0" max="30000" style="width:72px" oninput="document.getElementById('fdr').value=this.value;document.getElementById('fdv').textContent=this.value+'ms'"><span class="rv" id="fdv">${d}ms</span></div><div class="chips">${[0,250,500,1000,2000,5000].map(x=>`<span class="chip" onclick="document.getElementById('fd').value=${x};document.getElementById('fdr').value=${x};document.getElementById('fdv').textContent='${x}ms'">${x===0?'None':x+'ms'}</span>`).join('')}</div></div><div class="fg-g full"><label>Custom Response Headers (JSON)</label><textarea id="fh" rows="2" style="min-height:48px">${esc(JSON.stringify(m.headers||{},null,2))}</textarea></div></div>`;}
-function pickMode(mode){document.getElementById('fmode').value=mode;document.getElementById('mc-net').className='mode-card'+(mode==='always_network'?' mc-net':'');document.getElementById('mc-fb').className='mode-card'+(mode==='fallback'?' mc-fb':'');document.getElementById('mc-mk').className='mode-card'+(mode==='always_mock'?' mc-mk':'');document.getElementById('net-sec').style.display=mode==='always_mock'?'none':'block';document.getElementById('mock-sec').style.display=mode==='always_network'?'none':'block';}
-function cancelEdit(){selId=null;isNew=false;document.getElementById('de').style.display='flex';document.getElementById('ew').style.display='none';renderList(document.getElementById('srch').value);}
-async function probeExt(){const url=(document.getElementById('feu').value||document.getElementById('gbu').value||'').trim();if(!url){toast('Enter an external URL first','er');return;}const el=document.getElementById('probe-res');el.textContent='Checking...';el.style.color='var(--tx3)';try{const d=await(await fetch(API+'/probe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})})).json();el.style.color=d.reachable?'var(--grn)':'var(--red)';el.textContent=d.reachable?'OK ('+d.status+')':'Unreachable';}catch(e){el.textContent='Error';}}
-async function saveRule(){let headers={};try{headers=JSON.parse(document.getElementById('fh').value||'{}');}catch(e){toast('Invalid JSON in headers','er');return;}const mode=document.getElementById('fmode').value;const ct=(document.getElementById('fct')||{value:'application/json'}).value;const body=(document.getElementById('fb')||{value:''}).value;if(mode!=='always_network'&&ct.includes('json')&&body.trim()){try{JSON.parse(body.replace(/\{\{[^}]+\}\}/g,'PLACEHOLDER'));}catch(e){toast('Response body is not valid JSON','er');return;}}const payload={name:document.getElementById('fn').value,method:document.getElementById('fm').value,path:document.getElementById('fp').value,mode,externalUrl:(document.getElementById('feu')||{value:''}).value,networkTimeoutMs:parseInt((document.getElementById('fto')||{value:8000}).value)||8000,statusCode:parseInt((document.getElementById('fsc')||{value:200}).value)||200,forceStatusCode:parseInt((document.getElementById('ffsc')||{value:0}).value)||0,contentType:ct,responseBody:body,delayMs:parseInt(document.getElementById('fd').value)||0,headers,enabled:true,};if(!payload.path){toast('Path is required','er');return;}try{if(isNew){const r=await(await fetch(API+'/mocks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})).json();selId=r.id;isNew=false;toast('Rule created!','ok');}else{await fetch(API+'/mocks/'+selId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});toast('Rule saved!','ok');}await loadMocks();selectMock(selId);}catch(e){toast('Save failed: '+e.message,'er');}}
-async function deleteRule(id){if(!confirm('Delete this rule?'))return;await fetch(API+'/mocks/'+id,{method:'DELETE'});cancelEdit();toast('Deleted','in');await loadMocks();}
-async function toggleRule(id,enabled){await fetch(API+'/mocks/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({enabled})});await loadMocks();if(selId===id)selectMock(id);}
-async function runTest(){const path=(document.getElementById('fp')||{value:'/'}).value;const meth=(document.getElementById('fm')||{value:'GET'}).value;document.getElementById('to').innerHTML=`<span style="color:var(--tx3)">Sending ${meth} ${path}...</span>`;try{const d=await(await fetch(API+'/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path,method:meth})})).json();if(d.error){document.getElementById('to').innerHTML=`<span style="color:var(--red)">${esc(d.error)}</span>`;return;}const sc=d.statusCode,cc=sc<300?'var(--grn)':sc<400?'var(--cyn)':sc<500?'var(--yel)':'var(--red)';const src=d.headers['x-localmockr-source']||'';const sl=src==='network'?'🌐 network':src.includes('fallback')?'🔀 fallback':src==='mock'?'📦 mock':src;document.getElementById('to').innerHTML=`<div style="display:flex;gap:12px;margin-bottom:6px;flex-wrap:wrap;align-items:center"><span style="color:${cc};font-weight:700;font-size:14px">HTTP ${sc}</span><span style="color:var(--org)">⏱ ${d.elapsedMs}ms</span><span style="color:var(--tx3)">${esc(d.headers['content-type']||'')}</span>${sl?`<span style="color:var(--tx2)">Source: ${esc(sl)}</span>`:''}</div><pre style="white-space:pre-wrap;word-break:break-all;font-size:10px">${esc(fmt(d.body))}</pre>`;await loadLogs();}catch(e){document.getElementById('to').innerHTML=`<span style="color:var(--red)">${esc(e.message)}</span>`;}}
-function fmt(s){try{return JSON.stringify(JSON.parse(s),null,2);}catch{return s;}}
-function renderLogs(){const b=document.getElementById('lb');if(!logs.length){b.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:18px">No requests yet</td></tr>`;return;}const sc=n=>!n?'':n<300?'s2':n<400?'s3':n<500?'s4':'s5';const mp=m=>m==='always_network'?'<span class="mp mpN">🌐 Net</span>':m==='fallback'?'<span class="mp mpF">🔀 FB</span>':m==='always_mock'?'<span class="mp mpM">📦 Mock</span>':esc(m||'—');const srcC=s=>s&&s.includes('network')&&!s.includes('error')?'color:var(--cyn)':s&&s.includes('fallback')?'color:var(--org)':s&&s.includes('error')?'color:var(--red)':'color:var(--acc2)';b.innerHTML=logs.map(l=>`<tr><td style="color:var(--tx3)">${new Date(l.timestamp).toLocaleTimeString()}</td><td><span class="mb m${l.method||'GET'}">${l.method||'?'}</span></td><td style="color:var(--txt);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(l.path)}">${esc(l.path)}</td><td><span class="sb2 ${sc(l.statusCode)}">${l.statusCode||'—'}</span></td><td>${mp(l.mode)}</td><td style="${srcC(l.source)}">${esc(l.source||'—')}</td><td style="color:var(--org)">${l.delayMs!=null?l.delayMs+'ms':'—'}</td></tr>`).join('');}
-async function clearLogs(){await fetch(API+'/logs',{method:'DELETE'});logs=[];renderLogs();document.getElementById('lc').textContent='0';toast('Logs cleared','in');}
-const THEMES=[{id:'midnight',name:'Midnight',mode:'dark',acc:'#5b5fc7',acc2:'#7b7ef5',glow:'rgba(91,95,199,0.22)',bg:'#0a0a0f',sur:'#111118',sur2:'#18181f',sur3:'#1e1e28',bdr:'#2a2a38',bdr2:'#363648',txt:'#e8e8f0',tx2:'#9898b0',tx3:'#555568'},{id:'emerald',name:'Emerald',mode:'dark',acc:'#10b981',acc2:'#34d399',glow:'rgba(16,185,129,0.22)',bg:'#071410',sur:'#0d1f1a',sur2:'#132620',sur3:'#182e26',bdr:'#1e3d30',bdr2:'#254d3c',txt:'#e0f5ef',tx2:'#7dbfa8',tx3:'#3d7060'},{id:'rose',name:'Rose',mode:'dark',acc:'#f43f5e',acc2:'#fb7185',glow:'rgba(244,63,94,0.22)',bg:'#100709',sur:'#1a0d10',sur2:'#201016',sur3:'#26131b',bdr:'#3d1a23',bdr2:'#4d202c',txt:'#f5e0e4',tx2:'#c07080',tx3:'#6e3040'},{id:'amber',name:'Amber',mode:'dark',acc:'#f59e0b',acc2:'#fbbf24',glow:'rgba(245,158,11,0.22)',bg:'#0f0c00',sur:'#1a1500',sur2:'#201a00',sur3:'#261f00',bdr:'#3d3000',bdr2:'#4d3d00',txt:'#f5f0e0',tx2:'#c0a840',tx3:'#6e5f10'},{id:'ocean',name:'Ocean',mode:'dark',acc:'#06b6d4',acc2:'#22d3ee',glow:'rgba(6,182,212,0.22)',bg:'#00090f',sur:'#001520',sur2:'#001a28',sur3:'#002030',bdr:'#003040',bdr2:'#004050',txt:'#e0f4f8',tx2:'#60b8d0',tx3:'#205060'},{id:'violet',name:'Violet',mode:'dark',acc:'#8b5cf6',acc2:'#a78bfa',glow:'rgba(139,92,246,0.22)',bg:'#07050f',sur:'#100d1c',sur2:'#151024',sur3:'#1a132c',bdr:'#2a1f45',bdr2:'#352856',txt:'#ede8f8',tx2:'#9080c0',tx3:'#504070'},{id:'cloud',name:'Cloud',mode:'light',acc:'#5b5fc7',acc2:'#4347b0',glow:'rgba(91,95,199,0.15)',bg:'#f0f0f8',sur:'#ffffff',sur2:'#f4f4fc',sur3:'#e8e8f4',bdr:'#d4d4e8',bdr2:'#c4c4dc',txt:'#1a1a2e',tx2:'#555570',tx3:'#9898b0'},{id:'blossom',name:'Blossom',mode:'light',acc:'#e11d48',acc2:'#be123c',glow:'rgba(225,29,72,0.15)',bg:'#fff5f7',sur:'#ffffff',sur2:'#fff0f3',sur3:'#ffe4ea',bdr:'#fecdd3',bdr2:'#fda4af',txt:'#1a0810',tx2:'#885060',tx3:'#c090a0'}];
-let curTheme='midnight';
-function applyTheme(t){const r=document.documentElement.style;r.setProperty('--acc',t.acc);r.setProperty('--acc2',t.acc2);r.setProperty('--glow',t.glow);r.setProperty('--bg',t.bg);r.setProperty('--sur',t.sur);r.setProperty('--sur2',t.sur2);r.setProperty('--sur3',t.sur3);r.setProperty('--bdr',t.bdr);r.setProperty('--bdr2',t.bdr2);r.setProperty('--txt',t.txt);r.setProperty('--tx2',t.tx2);r.setProperty('--tx3',t.tx3);curTheme=t.id;const ca=document.getElementById('cp-a'),cb=document.getElementById('cp-b'),ha=document.getElementById('ch-a'),hb=document.getElementById('ch-b');if(ca){ca.value=t.acc;}if(ha){ha.value=t.acc;}if(cb){cb.value=t.bg;}if(hb){hb.value=t.bg;}const bd=document.getElementById('btn-dark'),bl=document.getElementById('btn-light');if(bd){bd.className='ld-btn'+(t.mode==='dark'?' ld-on':'');}if(bl){bl.className='ld-btn'+(t.mode==='light'?' ld-on':'');}try{localStorage.setItem('lm-theme',JSON.stringify(t));}catch(e){}renderThemeGrid();}
-function themeMode(mode){const t=THEMES.find(x=>x.mode===mode&&x.id!==curTheme)||THEMES.find(x=>x.mode===mode);if(t)applyTheme(t);}
-function renderThemeGrid(){const g=document.getElementById('th-grid');if(!g)return;g.innerHTML=THEMES.map(t=>`<div class="th-card ${t.id===curTheme?'th-on':''}" style="background:${t.bg};color:${t.txt};border-color:${t.id===curTheme?t.acc:'transparent'}" onclick="applyTheme(THEMES.find(x=>x.id==='${t.id}'))"><div class="th-sw" style="background:${t.acc}"></div>${t.name}</div>`).join('');}
-function applyCustomTheme(){const acc=document.getElementById('ch-a').value.trim()||'#5b5fc7';const bg=document.getElementById('ch-b').value.trim()||'#0a0a0f';if(!/^#[0-9a-fA-F]{6}$/.test(acc)||!/^#[0-9a-fA-F]{6}$/.test(bg)){toast('Enter valid hex colours','er');return;}function lx(hex,p){let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);r=Math.min(255,Math.round(r+(255-r)*p));g=Math.min(255,Math.round(g+(255-g)*p));b=Math.min(255,Math.round(b+(255-b)*p));return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}const bright=parseInt(bg.slice(1,3),16)*.299+parseInt(bg.slice(3,5),16)*.587+parseInt(bg.slice(5,7),16)*.114;const dark=bright<128;applyTheme({id:'custom',name:'Custom',mode:dark?'dark':'light',acc,acc2:lx(acc,.15),glow:`rgba(${parseInt(acc.slice(1,3),16)},${parseInt(acc.slice(3,5),16)},${parseInt(acc.slice(5,7),16)},0.2)`,bg,sur:lx(bg,dark?.05:.03),sur2:lx(bg,dark?.10:.06),sur3:lx(bg,dark?.15:.09),bdr:lx(bg,dark?.22:.15),bdr2:lx(bg,dark?.30:.22),txt:dark?'#e8e8f0':'#1a1a2e',tx2:dark?'#9898b0':'#555570',tx3:dark?'#555568':'#9898b0'});toast('Custom theme applied','ok');}
-function initTheme(){try{const s=localStorage.getItem('lm-theme');if(s){applyTheme(JSON.parse(s));return;}}catch(e){}applyTheme(THEMES[0]);}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function toast(msg,type='in'){const el=document.createElement('div');el.className='toast '+(type==='ok'?'ok':type==='er'?'er':'in');el.textContent=msg;document.getElementById('tc').appendChild(el);setTimeout(()=>el.remove(),3000);}
-setInterval(()=>{if(document.getElementById('t-logs').classList.contains('on'))loadLogs();},5000);
-initTheme();refreshAll();
+const API = 'http://localhost:3848/api';
+let mocks = [], logs = [], selId = null, isNew = false;
+
+/* Tab switching
+   FIX: always set display:'flex' for active pane - never rely on CSS .show class */
+function show(tab) {
+  ['rules','logs','settings'].forEach(t => {
+    const pane = document.getElementById('p-' + t);
+    pane.style.display = (t === tab) ? 'flex' : 'none';
+    document.getElementById('t-' + t).className = 'tab' + (t === tab ? ' on' : '');
+  });
+  if (tab === 'logs')     loadLogs();
+  if (tab === 'settings') { loadSettings(); renderThemeGrid(); syncThemeButtons(); }
+}
+
+/* Data loading */
+async function refreshAll() { await loadMocks(); await loadLogs(); }
+
+async function loadMocks() {
+  try {
+    mocks = await (await fetch(API + '/mocks')).json();
+    renderList();
+    document.getElementById('mc').textContent = mocks.length;
+  } catch(e) { toast('Cannot reach server. Is LocalMockr running?', 'er'); }
+}
+
+async function loadLogs() {
+  try {
+    logs = await (await fetch(API + '/logs')).json();
+    renderLogs();
+    document.getElementById('lc').textContent = logs.length;
+  } catch(e) {}
+}
+
+async function loadSettings() {
+  try {
+    const s = await (await fetch(API + '/settings')).json();
+    document.getElementById('gbu').value = s.globalBaseUrl || '';
+  } catch(e) {}
+}
+
+async function saveSettings() {
+  const url = document.getElementById('gbu').value.trim();
+  await fetch(API + '/settings', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({globalBaseUrl: url}) });
+  toast('Settings saved', 'ok');
+}
+
+async function probeGlobal() {
+  const url = document.getElementById('gbu').value.trim();
+  if (!url) { toast('Enter a URL first', 'er'); return; }
+  const el = document.getElementById('gpr');
+  el.textContent = 'Checking...'; el.style.color = 'var(--tx3)';
+  try {
+    const d = await (await fetch(API + '/probe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url}) })).json();
+    el.style.color = d.reachable ? 'var(--grn)' : 'var(--red)';
+    el.textContent  = d.reachable ? 'Reachable (' + d.status + ')' : 'Unreachable: ' + (d.error || 'failed');
+  } catch(e) { el.textContent = 'Error'; }
+}
+
+/* Mock list */
+function renderList(filter = '') {
+  const c = document.getElementById('ml');
+  const f = filter.toLowerCase();
+  const arr = mocks.filter(m =>
+    m.path.toLowerCase().includes(f) ||
+    m.method.toLowerCase().includes(f) ||
+    (m.name  || '').toLowerCase().includes(f) ||
+    (m.mode  || '').toLowerCase().includes(f)
+  );
+  if (!arr.length) {
+    c.innerHTML = '<div class="eh">' + (filter ? 'No matches' : 'No rules yet.<br>Click <b>+ New Rule</b>') + '</div>';
+    return;
+  }
+  const sc = n => n < 300 ? 's2' : n < 400 ? 's3' : n < 500 ? 's4' : 's5';
+  const mp = m => m === 'always_network'
+    ? '<span class="mp mpN">🌐 Network</span>'
+    : m === 'fallback'
+      ? '<span class="mp mpF">🔀 Fallback</span>'
+      : '<span class="mp mpM">📦 Mock</span>';
+  c.innerHTML = arr.map(m =>
+    '<div class="mc ' + (selId === m.id ? 'sel' : '') + ' ' + (!m.enabled ? 'dis' : '') + '" onclick="selectMock(\'' + m.id + '\')">' +
+    '<div class="mc-t">' +
+    '<span class="mb m' + (m.method === '*' ? 'ANY' : m.method) + '">' + (m.method === '*' ? 'ANY' : m.method) + '</span>' +
+    '<span class="mc-p">' + esc(m.path) + '</span>' +
+    '<span class="sb2 ' + sc(m.statusCode || 200) + '">' + (m.statusCode || 200) + '</span>' +
+    '<label class="tgl" onclick="event.stopPropagation()">' +
+    '<input type="checkbox" ' + (m.enabled ? 'checked' : '') + ' onchange="toggleRule(\'' + m.id + '\',this.checked)">' +
+    '<span class="tgl-sl"></span></label></div>' +
+    '<div class="mc-m"><span>' + esc(m.name || 'Unnamed') + '</span>' + mp(m.mode || 'always_mock') +
+    (m.delayMs > 0 ? '<span style="color:var(--org)">⏱' + m.delayMs + 'ms</span>' : '') +
+    '</div></div>'
+  ).join('');
+}
+
+function selectMock(id) {
+  selId = id; isNew = false;
+  renderList(document.getElementById('srch').value);
+  buildEditor(mocks.find(m => m.id === id));
+}
+
+function openNew() {
+  selId = null; isNew = true;
+  renderList(document.getElementById('srch').value);
+  buildEditor({
+    name: '', method: 'GET', path: '/api/example', mode: 'always_mock',
+    externalUrl: '', networkTimeoutMs: 8000,
+    statusCode: 200, forceStatusCode: 0,
+    contentType: 'application/json',
+    responseBody: '{\n  "source": "LOCAL_MOCK",\n  "message": "Hello from LocalMockr"\n}',
+    delayMs: 0, headers: {}, enabled: true
+  }, true);
+}
+
+/* Editor builder */
+function buildEditor(m, isNewForm) {
+  isNewForm = isNewForm || false;
+  document.getElementById('de').style.display = 'none';
+  /* FIX: show #ew as flex so ed-scroll + test-pan stack as column correctly */
+  var ew = document.getElementById('ew');
+  ew.style.display = 'flex';
+
+  var mode = m.mode || 'always_mock', sc = m.statusCode || 200, fsc = m.forceStatusCode || 0, d = m.delayMs || 0;
+  var methods = ['GET','POST','PUT','PATCH','DELETE','OPTIONS','HEAD','*'];
+  var methodOpts = methods.map(function(x){ return '<option value="' + x + '"' + (m.method === x ? ' selected' : '') + '>' + (x === '*' ? 'ANY (wildcard)' : x) + '</option>'; }).join('');
+  var statusBtns = [200,201,204,400,401,403,404,422,500,503].map(function(s){
+    var c = s < 300 ? 'sp2' : s < 500 ? 'sp4' : 'sp5';
+    return '<button class="sp ' + c + '" onclick="document.getElementById(\'fsc\').value=' + s + '">' + s + '</button>';
+  }).join('');
+  var timeoutChips = [2000,5000,8000,15000,30000].map(function(t){
+    return '<span class="chip" onclick="document.getElementById(\'fto\').value=' + t + '">' + (t/1000) + 's</span>';
+  }).join('');
+  var ctChips = ['application/json','text/plain','application/xml','text/html'].map(function(ct){
+    return '<span class="chip" onclick="document.getElementById(\'fct\').value=\'' + ct + '\'">' + ct + '</span>';
+  }).join('');
+  var fscBtns = [0,200,400,500,503].map(function(s){
+    var c = s < 300 ? 'sp2' : s < 500 ? 'sp4' : 'sp5';
+    return '<button class="sp ' + c + '" onclick="document.getElementById(\'ffsc\').value=' + s + '">' + (s === 0 ? 'Off' : s) + '</button>';
+  }).join('');
+  var delayChips = [0,250,500,1000,2000,5000].map(function(x){
+    return '<span class="chip" onclick="document.getElementById(\'fd\').value=' + x + ';document.getElementById(\'fdr\').value=' + x + ';document.getElementById(\'fdv\').textContent=\'' + x + 'ms\'">' + (x === 0 ? 'None' : x + 'ms') + '</span>';
+  }).join('');
+
+  document.getElementById('ef').innerHTML =
+    '<div class="ed-hd">' +
+    '<div class="ed-ti">' + (isNewForm ? '✦ New Rule' : '✦ Edit Rule') + '</div>' +
+    '<div class="ed-ac">' +
+    (!isNewForm ? '<button class="btn-r" onclick="deleteRule(\'' + m.id + '\')">🗑 Delete</button>' : '') +
+    '<button class="btn-g" onclick="cancelEdit()">Cancel</button>' +
+    '<button class="btn" onclick="saveRule()">💾 Save</button>' +
+    '</div></div>' +
+    '<div class="tip"><b>Tip:</b> Point your app at <b>http://localhost:3847</b>. Use <b>{{timestamp}}</b> or <b>{{random_id}}</b> in the response body.</div>' +
+    '<div class="fg">' +
+    '<div class="fg-g"><label>Rule Name</label><input type="text" id="fn" placeholder="e.g. Get Bank Details" value="' + esc(m.name || '') + '"></div>' +
+    '<div class="fg-g"><label>HTTP Method</label><select id="fm">' + methodOpts + '</select></div>' +
+    '<div class="fg-g full"><label>API Path (supports * wildcard)</label><input type="text" id="fp" placeholder="/api/customer/bankdetails" value="' + esc(m.path) + '"></div>' +
+    '</div>' +
+    '<div class="div"></div>' +
+    '<div class="sec">Request Mode</div>' +
+    '<div class="mode-row">' +
+    '<div class="mode-card ' + (mode === 'always_network' ? 'mc-net' : '') + '" id="mc-net" onclick="pickMode(\'always_network\')">' +
+    '<div class="mode-icon">🌐</div><div class="mode-nm" style="color:var(--cyn)">Always Network</div><div class="mode-ds">Forward to real external API</div></div>' +
+    '<div class="mode-card ' + (mode === 'fallback' ? 'mc-fb' : '') + '" id="mc-fb" onclick="pickMode(\'fallback\')">' +
+    '<div class="mode-icon">🔀</div><div class="mode-nm" style="color:var(--org)">Network + Fallback</div><div class="mode-ds">Try real API, use mock if down</div></div>' +
+    '<div class="mode-card ' + (mode === 'always_mock' ? 'mc-mk' : '') + '" id="mc-mk" onclick="pickMode(\'always_mock\')">' +
+    '<div class="mode-icon">📦</div><div class="mode-nm" style="color:var(--acc2)">Always Mock</div><div class="mode-ds">Always return saved local JSON</div></div>' +
+    '</div>' +
+    '<input type="hidden" id="fmode" value="' + mode + '">' +
+    '<div id="net-sec" style="display:' + (mode === 'always_mock' ? 'none' : 'block') + '">' +
+    '<div class="div"></div><div class="sec">External API</div>' +
+    '<div class="fg"><div class="probe-row full"><div class="fg-g">' +
+    '<label>External Base URL (blank = use global setting)</label>' +
+    '<input type="text" id="feu" placeholder="https://api.example.com" value="' + esc(m.externalUrl || '') + '">' +
+    '</div><button class="btn-g" onclick="probeExt()" style="margin-bottom:0">🔍 Test</button>' +
+    '<span id="probe-res"></span></div>' +
+    '<div class="fg-g"><label>Timeout (ms)</label>' +
+    '<input type="number" id="fto" value="' + (m.networkTimeoutMs || 8000) + '" min="500" max="60000">' +
+    '<div class="chips">' + timeoutChips + '</div></div></div></div>' +
+    '<div id="mock-sec" style="display:' + (mode === 'always_network' ? 'none' : 'block') + '">' +
+    '<div class="div"></div><div class="sec">Saved Local Response</div>' +
+    '<div class="fg-g" style="margin-bottom:10px"><label>Status Code</label>' +
+    '<div class="sps">' + statusBtns + '</div>' +
+    '<input type="number" id="fsc" value="' + sc + '" min="100" max="599"></div>' +
+    '<div class="fg-g" style="margin-bottom:10px"><label>Content-Type</label>' +
+    '<input type="text" id="fct" value="' + esc(m.contentType || 'application/json') + '">' +
+    '<div class="chips">' + ctChips + '</div></div>' +
+    '<div class="fg-g" style="margin-bottom:11px"><label>Response Body</label>' +
+    '<textarea id="fb" rows="8">' + esc(m.responseBody || '') + '</textarea></div></div>' +
+    '<div class="div"></div><div class="sec">Overrides &amp; Throttling</div>' +
+    '<div class="fg"><div class="fg-g"><label>Force Status Override (0 = disabled)</label>' +
+    '<div class="sps">' + fscBtns + '</div>' +
+    '<input type="number" id="ffsc" value="' + fsc + '" min="0" max="599" placeholder="0 = disabled"></div>' +
+    '<div class="fg-g"><label>Response Delay / Throttle (ms)</label>' +
+    '<div class="rng-row">' +
+    '<input type="range" id="fdr" min="0" max="10000" step="50" value="' + d + '" oninput="document.getElementById(\'fd\').value=this.value;document.getElementById(\'fdv\').textContent=this.value+\'ms\'">' +
+    '<input type="number" id="fd" value="' + d + '" min="0" max="30000" style="width:72px" oninput="document.getElementById(\'fdr\').value=this.value;document.getElementById(\'fdv\').textContent=this.value+\'ms\'">' +
+    '<span class="rv" id="fdv">' + d + 'ms</span></div>' +
+    '<div class="chips">' + delayChips + '</div></div>' +
+    '<div class="fg-g full"><label>Custom Response Headers (JSON)</label>' +
+    '<textarea id="fh" rows="2" style="min-height:48px">' + esc(JSON.stringify(m.headers || {}, null, 2)) + '</textarea>' +
+    '</div></div>';
+}
+
+function pickMode(mode) {
+  document.getElementById('fmode').value = mode;
+  document.getElementById('mc-net').className = 'mode-card' + (mode === 'always_network' ? ' mc-net' : '');
+  document.getElementById('mc-fb' ).className = 'mode-card' + (mode === 'fallback'       ? ' mc-fb'  : '');
+  document.getElementById('mc-mk' ).className = 'mode-card' + (mode === 'always_mock'    ? ' mc-mk'  : '');
+  document.getElementById('net-sec').style.display  = mode === 'always_mock'    ? 'none'  : 'block';
+  document.getElementById('mock-sec').style.display = mode === 'always_network' ? 'none'  : 'block';
+}
+
+function cancelEdit() {
+  selId = null; isNew = false;
+  document.getElementById('de').style.display  = 'flex';
+  document.getElementById('ew').style.display  = 'none';
+  renderList(document.getElementById('srch').value);
+}
+
+async function probeExt() {
+  var url = ((document.getElementById('feu') || {value:''}).value || document.getElementById('gbu').value || '').trim();
+  if (!url) { toast('Enter an external URL first', 'er'); return; }
+  var el = document.getElementById('probe-res');
+  el.textContent = 'Checking...'; el.style.color = 'var(--tx3)';
+  try {
+    var d = await (await fetch(API + '/probe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url:url}) })).json();
+    el.style.color  = d.reachable ? 'var(--grn)' : 'var(--red)';
+    el.textContent  = d.reachable ? 'OK (' + d.status + ')' : 'Unreachable';
+  } catch(e) { el.textContent = 'Error'; }
+}
+
+async function saveRule() {
+  var headers = {};
+  try { headers = JSON.parse(document.getElementById('fh').value || '{}'); }
+  catch(e) { toast('Invalid JSON in headers', 'er'); return; }
+  var mode = document.getElementById('fmode').value;
+  var ct   = (document.getElementById('fct')  || {value:'application/json'}).value;
+  var body = (document.getElementById('fb')   || {value:''}).value;
+  if (mode !== 'always_network' && ct.includes('json') && body.trim()) {
+    try { JSON.parse(body.replace(/\{\{[^}]+\}\}/g, 'PLACEHOLDER')); }
+    catch(e) { toast('Response body is not valid JSON', 'er'); return; }
+  }
+  var payload = {
+    name:             document.getElementById('fn').value,
+    method:           document.getElementById('fm').value,
+    path:             document.getElementById('fp').value,
+    mode:             mode,
+    externalUrl:      (document.getElementById('feu')   || {value:''}).value,
+    networkTimeoutMs: parseInt((document.getElementById('fto')  || {value:8000}).value) || 8000,
+    statusCode:       parseInt((document.getElementById('fsc')  || {value:200}).value)  || 200,
+    forceStatusCode:  parseInt((document.getElementById('ffsc') || {value:0}).value)    || 0,
+    contentType:      ct,
+    responseBody:     body,
+    delayMs:          parseInt(document.getElementById('fd').value) || 0,
+    headers:          headers,
+    enabled:          true,
+  };
+  if (!payload.path) { toast('Path is required', 'er'); return; }
+  try {
+    if (isNew) {
+      var r = await (await fetch(API + '/mocks', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })).json();
+      selId = r.id; isNew = false; toast('Rule created!', 'ok');
+    } else {
+      await fetch(API + '/mocks/' + selId, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      toast('Rule saved!', 'ok');
+    }
+    await loadMocks(); selectMock(selId);
+  } catch(e) { toast('Save failed: ' + e.message, 'er'); }
+}
+
+async function deleteRule(id) {
+  if (!confirm('Delete this rule?')) return;
+  await fetch(API + '/mocks/' + id, {method:'DELETE'});
+  cancelEdit(); toast('Deleted', 'in'); await loadMocks();
+}
+
+async function toggleRule(id, enabled) {
+  await fetch(API + '/mocks/' + id, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({enabled:enabled}) });
+  await loadMocks();
+  if (selId === id) selectMock(id);
+}
+
+async function runTest() {
+  var path = (document.getElementById('fp') || {value:'/'}).value;
+  var meth = (document.getElementById('fm') || {value:'GET'}).value;
+  document.getElementById('to').innerHTML = '<span style="color:var(--tx3)">Sending ' + meth + ' ' + path + '...</span>';
+  try {
+    var d  = await (await fetch(API + '/test', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path:path, method:meth}) })).json();
+    if (d.error) { document.getElementById('to').innerHTML = '<span style="color:var(--red)">' + esc(d.error) + '</span>'; return; }
+    var sc = d.statusCode, cc = sc < 300 ? 'var(--grn)' : sc < 400 ? 'var(--cyn)' : sc < 500 ? 'var(--yel)' : 'var(--red)';
+    var src = d.headers['x-localmockr-source'] || '';
+    var sl  = src === 'network' ? '🌐 network' : src.indexOf('fallback') >= 0 ? '🔀 fallback' : src === 'mock' ? '📦 mock' : src;
+    document.getElementById('to').innerHTML =
+      '<div style="display:flex;gap:12px;margin-bottom:6px;flex-wrap:wrap;align-items:center">' +
+      '<span style="color:' + cc + ';font-weight:700;font-size:14px">HTTP ' + sc + '</span>' +
+      '<span style="color:var(--org)">⏱ ' + d.elapsedMs + 'ms</span>' +
+      '<span style="color:var(--tx3)">' + esc(d.headers['content-type'] || '') + '</span>' +
+      (sl ? '<span style="color:var(--tx2)">Source: ' + esc(sl) + '</span>' : '') +
+      '</div><pre style="white-space:pre-wrap;word-break:break-all;font-size:10px">' + esc(fmt(d.body)) + '</pre>';
+    await loadLogs();
+  } catch(e) { document.getElementById('to').innerHTML = '<span style="color:var(--red)">' + esc(e.message) + '</span>'; }
+}
+
+function fmt(s) { try { return JSON.stringify(JSON.parse(s), null, 2); } catch(e) { return s; } }
+
+/* Logs rendering */
+function renderLogs() {
+  var b = document.getElementById('lb');
+  if (!logs.length) {
+    b.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:18px">No requests yet</td></tr>';
+    return;
+  }
+  var sc  = function(n){ return !n ? '' : n < 300 ? 's2' : n < 400 ? 's3' : n < 500 ? 's4' : 's5'; };
+  var mp  = function(m){ return m === 'always_network' ? '<span class="mp mpN">🌐 Net</span>' : m === 'fallback' ? '<span class="mp mpF">🔀 FB</span>' : m === 'always_mock' ? '<span class="mp mpM">📦 Mock</span>' : esc(m || '—'); };
+  var srcC= function(s){ return s && s.indexOf('network') >= 0 && s.indexOf('error') < 0 ? 'color:var(--cyn)' : s && s.indexOf('fallback') >= 0 ? 'color:var(--org)' : s && s.indexOf('error') >= 0 ? 'color:var(--red)' : 'color:var(--acc2)'; };
+  b.innerHTML = logs.map(function(l){
+    return '<tr>' +
+      '<td style="color:var(--tx3)">' + new Date(l.timestamp).toLocaleTimeString() + '</td>' +
+      '<td><span class="mb m' + (l.method || 'GET') + '">' + (l.method || '?') + '</span></td>' +
+      '<td style="color:var(--txt);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(l.path) + '">' + esc(l.path) + '</td>' +
+      '<td><span class="sb2 ' + sc(l.statusCode) + '">' + (l.statusCode || '—') + '</span></td>' +
+      '<td>' + mp(l.mode) + '</td>' +
+      '<td style="' + srcC(l.source) + '">' + esc(l.source || '—') + '</td>' +
+      '<td style="color:var(--org)">' + (l.delayMs != null ? l.delayMs + 'ms' : '—') + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+async function clearLogs() {
+  await fetch(API + '/logs', {method:'DELETE'});
+  logs = []; renderLogs();
+  document.getElementById('lc').textContent = '0';
+  toast('Logs cleared', 'in');
+}
+
+/* Theming */
+var THEMES = [
+  {id:'midnight', name:'Midnight', mode:'dark',  acc:'#5b5fc7', acc2:'#7b7ef5', glow:'rgba(91,95,199,0.22)',   bg:'#0a0a0f', sur:'#111118', sur2:'#18181f', sur3:'#1e1e28', bdr:'#2a2a38', bdr2:'#363648', txt:'#e8e8f0', tx2:'#9898b0', tx3:'#555568'},
+  {id:'emerald',  name:'Emerald',  mode:'dark',  acc:'#10b981', acc2:'#34d399', glow:'rgba(16,185,129,0.22)',  bg:'#071410', sur:'#0d1f1a', sur2:'#132620', sur3:'#182e26', bdr:'#1e3d30', bdr2:'#254d3c', txt:'#e0f5ef', tx2:'#7dbfa8', tx3:'#3d7060'},
+  {id:'rose',     name:'Rose',     mode:'dark',  acc:'#f43f5e', acc2:'#fb7185', glow:'rgba(244,63,94,0.22)',   bg:'#100709', sur:'#1a0d10', sur2:'#201016', sur3:'#26131b', bdr:'#3d1a23', bdr2:'#4d202c', txt:'#f5e0e4', tx2:'#c07080', tx3:'#6e3040'},
+  {id:'amber',    name:'Amber',    mode:'dark',  acc:'#f59e0b', acc2:'#fbbf24', glow:'rgba(245,158,11,0.22)',  bg:'#0f0c00', sur:'#1a1500', sur2:'#201a00', sur3:'#261f00', bdr:'#3d3000', bdr2:'#4d3d00', txt:'#f5f0e0', tx2:'#c0a840', tx3:'#6e5f10'},
+  {id:'ocean',    name:'Ocean',    mode:'dark',  acc:'#06b6d4', acc2:'#22d3ee', glow:'rgba(6,182,212,0.22)',   bg:'#00090f', sur:'#001520', sur2:'#001a28', sur3:'#002030', bdr:'#003040', bdr2:'#004050', txt:'#e0f4f8', tx2:'#60b8d0', tx3:'#205060'},
+  {id:'violet',   name:'Violet',   mode:'dark',  acc:'#8b5cf6', acc2:'#a78bfa', glow:'rgba(139,92,246,0.22)', bg:'#07050f', sur:'#100d1c', sur2:'#151024', sur3:'#1a132c', bdr:'#2a1f45', bdr2:'#352856', txt:'#ede8f8', tx2:'#9080c0', tx3:'#504070'},
+  {id:'cloud',    name:'Cloud',    mode:'light', acc:'#5b5fc7', acc2:'#4347b0', glow:'rgba(91,95,199,0.15)',   bg:'#f0f0f8', sur:'#ffffff', sur2:'#f4f4fc', sur3:'#e8e8f4', bdr:'#d4d4e8', bdr2:'#c4c4dc', txt:'#1a1a2e', tx2:'#555570', tx3:'#9898b0'},
+  {id:'blossom',  name:'Blossom',  mode:'light', acc:'#e11d48', acc2:'#be123c', glow:'rgba(225,29,72,0.15)',   bg:'#fff5f7', sur:'#ffffff', sur2:'#fff0f3', sur3:'#ffe4ea', bdr:'#fecdd3', bdr2:'#fda4af', txt:'#1a0810', tx2:'#885060', tx3:'#c090a0'},
+];
+
+var curTheme = 'midnight';
+
+/* FIX: applyTheme updates CSS vars + syncs all theme UI elements */
+function applyTheme(t) {
+  var r = document.documentElement.style;
+  r.setProperty('--acc',  t.acc);  r.setProperty('--acc2', t.acc2);
+  r.setProperty('--glow', t.glow);
+  r.setProperty('--bg',   t.bg);   r.setProperty('--sur',  t.sur);
+  r.setProperty('--sur2', t.sur2); r.setProperty('--sur3', t.sur3);
+  r.setProperty('--bdr',  t.bdr);  r.setProperty('--bdr2', t.bdr2);
+  r.setProperty('--txt',  t.txt);  r.setProperty('--tx2',  t.tx2);
+  r.setProperty('--tx3',  t.tx3);
+  curTheme = t.id;
+
+  /* Sync colour pickers if settings panel is open */
+  var ca = document.getElementById('cp-a'), ha = document.getElementById('ch-a');
+  var cb = document.getElementById('cp-b'), hb = document.getElementById('ch-b');
+  if (ca) ca.value = t.acc; if (ha) ha.value = t.acc;
+  if (cb) cb.value = t.bg;  if (hb) hb.value = t.bg;
+
+  syncThemeButtons();
+  renderThemeGrid();
+
+  try { localStorage.setItem('lm-theme', JSON.stringify(t)); } catch(e) {}
+}
+
+/* FIX: separate function to keep Dark/Light toggle buttons in sync */
+function syncThemeButtons() {
+  var t    = THEMES.filter(function(x){ return x.id === curTheme; })[0];
+  var mode = t ? t.mode : (curTheme === 'custom' ? 'dark' : 'dark');
+  var bd   = document.getElementById('btn-dark');
+  var bl   = document.getElementById('btn-light');
+  if (bd) bd.className = 'ld-btn' + (mode === 'dark'  ? ' ld-on' : '');
+  if (bl) bl.className = 'ld-btn' + (mode === 'light' ? ' ld-on' : '');
+}
+
+function themeMode(mode) {
+  var t = THEMES.filter(function(x){ return x.mode === mode && x.id !== curTheme; })[0]
+       || THEMES.filter(function(x){ return x.mode === mode; })[0];
+  if (t) applyTheme(t);
+}
+
+function renderThemeGrid() {
+  var g = document.getElementById('th-grid');
+  if (!g) return;
+  g.innerHTML = THEMES.map(function(t){
+    return '<div class="th-card ' + (t.id === curTheme ? 'th-on' : '') + '"' +
+      ' style="background:' + t.bg + ';color:' + t.txt + ';border-color:' + (t.id === curTheme ? t.acc : 'transparent') + '"' +
+      ' onclick="applyTheme(THEMES.filter(function(x){return x.id===\'' + t.id + '\';})[0])">' +
+      '<div class="th-sw" style="background:' + t.acc + '"></div>' + t.name + '</div>';
+  }).join('');
+}
+
+function applyCustomTheme() {
+  var acc = document.getElementById('ch-a').value.trim() || '#5b5fc7';
+  var bg  = document.getElementById('ch-b').value.trim() || '#0a0a0f';
+  if (!/^#[0-9a-fA-F]{6}$/.test(acc) || !/^#[0-9a-fA-F]{6}$/.test(bg)) {
+    toast('Enter valid hex colours', 'er'); return;
+  }
+  function lx(hex, p) {
+    var rv = parseInt(hex.slice(1,3),16), gv = parseInt(hex.slice(3,5),16), bv = parseInt(hex.slice(5,7),16);
+    rv = Math.min(255, Math.round(rv + (255-rv)*p));
+    gv = Math.min(255, Math.round(gv + (255-gv)*p));
+    bv = Math.min(255, Math.round(bv + (255-bv)*p));
+    return '#' + [rv,gv,bv].map(function(x){ return x.toString(16).padStart(2,'0'); }).join('');
+  }
+  var bright = parseInt(bg.slice(1,3),16)*.299 + parseInt(bg.slice(3,5),16)*.587 + parseInt(bg.slice(5,7),16)*.114;
+  var dark   = bright < 128;
+  applyTheme({
+    id:'custom', name:'Custom', mode: dark ? 'dark' : 'light',
+    acc:acc, acc2:lx(acc,.15),
+    glow:'rgba(' + parseInt(acc.slice(1,3),16) + ',' + parseInt(acc.slice(3,5),16) + ',' + parseInt(acc.slice(5,7),16) + ',0.2)',
+    bg:bg,
+    sur:lx(bg, dark ? .05 : .03), sur2:lx(bg, dark ? .10 : .06), sur3:lx(bg, dark ? .15 : .09),
+    bdr:lx(bg, dark ? .22 : .15), bdr2:lx(bg, dark ? .30 : .22),
+    txt: dark ? '#e8e8f0' : '#1a1a2e',
+    tx2: dark ? '#9898b0' : '#555570',
+    tx3: dark ? '#555568' : '#9898b0',
+  });
+  toast('Custom theme applied', 'ok');
+}
+
+function initTheme() {
+  try {
+    var s = localStorage.getItem('lm-theme');
+    if (s) { applyTheme(JSON.parse(s)); return; }
+  } catch(e) {}
+  applyTheme(THEMES[0]);
+}
+
+/* Utilities */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function toast(msg, type) {
+  type = type || 'in';
+  var el = document.createElement('div');
+  el.className = 'toast ' + (type === 'ok' ? 'ok' : type === 'er' ? 'er' : 'in');
+  el.textContent = msg;
+  document.getElementById('tc').appendChild(el);
+  setTimeout(function(){ el.remove(); }, 3000);
+}
+
+/* Auto-refresh logs when that tab is active */
+setInterval(function(){
+  if (document.getElementById('t-logs').classList.contains('on')) loadLogs();
+}, 5000);
+
+/* Boot: init theme then activate Rules tab via show() so all state is consistent */
+initTheme();
+show('rules');
+refreshAll();
 </script>
 </body>
 </html>
