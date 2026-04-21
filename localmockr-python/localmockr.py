@@ -27,18 +27,21 @@ import string
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from datetime import datetime
 
-# UI_HTML is injected by embed_ui.py at build time
-UI_HTML = None
-
 PROXY_PORT = 3847
 UI_PORT    = 3848
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+UI_HTML_PATH = os.path.join(SCRIPT_DIR, 'ui.html')
+
+def load_ui_html():
+    """Read ui.html from disk next to this script."""
+    if not os.path.exists(UI_HTML_PATH):
+        return '<h1>ui.html not found</h1><p>Make sure ui.html is in the same folder as localmockr.py</p>'
+    with open(UI_HTML_PATH, 'r', encoding='utf-8') as f:
+        return f.read()
+
 def get_config_path():
-    if getattr(sys, 'frozen', False):
-        base = os.path.dirname(sys.executable)
-    else:
-        base = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base, 'mocks.json')
+    return os.path.join(SCRIPT_DIR, 'mocks.json')
 
 CONFIG_PATH  = get_config_path()
 _config_lock = threading.Lock()
@@ -244,7 +247,8 @@ class UIHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = urllib.parse.urlparse(self.path).path
         if path in ('/', '/index.html', ''):
-            html = UI_HTML.encode('utf-8')
+            # Read ui.html fresh from disk on every request (so edits take effect on refresh)
+            html = load_ui_html().encode('utf-8')
             self.send_response(200); self._cors()
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.send_header('Content-Length', str(len(html)))
@@ -328,20 +332,6 @@ def start_server(handler_class, port, label):
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     print('  OK  ' + label)
 
-def try_systray():
-    try:
-        import pystray
-        from PIL import Image, ImageDraw
-        img = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
-        ImageDraw.Draw(img).rounded_rectangle([4,4,60,60], radius=12, fill=(91,95,199,255))
-        def open_ui(icon, item): webbrowser.open('http://localhost:' + str(UI_PORT))
-        def quit_app(icon, item): icon.stop(); os._exit(0)
-        menu = pystray.Menu(pystray.MenuItem('Open Dashboard', open_ui, default=True),
-                            pystray.MenuItem('Quit LocalMockr', quit_app))
-        pystray.Icon('LocalMockr', img, 'LocalMockr', menu).run()
-    except Exception:
-        threading.Event().wait()
-
 def main():
     if sys.platform == 'win32':
         try:
@@ -356,11 +346,18 @@ def main():
     print('   LocalMockr v2  -  API Proxy & Mock Studio')
     print('  ==========================================')
     print('')
+
+    if not os.path.exists(UI_HTML_PATH):
+        print('  WARNING: ui.html not found at ' + UI_HTML_PATH)
+        print('  The dashboard will show an error page.')
+        print('')
+
     for port in (PROXY_PORT, UI_PORT):
         if not is_port_free(port):
             print('  ERROR: Port ' + str(port) + ' is already in use!')
             input('  Press Enter to exit...')
             sys.exit(1)
+
     print('  Starting servers...')
     start_server(ProxyHandler, PROXY_PORT, 'Proxy server -> http://localhost:' + str(PROXY_PORT))
     start_server(UIHandler,    UI_PORT,    'UI dashboard -> http://localhost:' + str(UI_PORT))
@@ -372,7 +369,8 @@ def main():
     print('  Keep this window open. Close it to stop.')
     print('')
     threading.Timer(1.5, lambda: webbrowser.open('http://localhost:' + str(UI_PORT))).start()
-    try_systray()
+    # Keep main thread alive
+    threading.Event().wait()
 
 if __name__ == '__main__':
     main()
